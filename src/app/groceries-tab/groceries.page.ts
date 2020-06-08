@@ -1,7 +1,8 @@
 import { GroceryService } from '../shared/services/grocery.service';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Grocery } from '../shared/models/grocery';
 import { ToastService } from '../shared/services/toast.service';
+import { IonSearchbar } from '@ionic/angular';
 
 @Component({
   selector: 'app-groceries',
@@ -9,12 +10,18 @@ import { ToastService } from '../shared/services/toast.service';
   styleUrls: ['groceries.page.scss']
 })
 export class GroceriesPage {
+  @ViewChild('searchBar', {static: false}) searchBar: IonSearchbar;
+
   groceries: Grocery[] = [];
   indeterminateState: boolean;
   checkParent: boolean;
 
   constructor(private groceryService: GroceryService, private toastService: ToastService) {
     this.groceries = this.groceryService.getGroceries();
+  }
+
+  ngAfterViewInit() {
+    this.verifyCheckBox();
   }
 
   delete(grocery: Grocery) {
@@ -57,8 +64,30 @@ export class GroceriesPage {
     }
   }
 
-  ngAfterViewInit() {
+  search(e) {
+    const text =e.target.value;
+    const allGrocery = this.groceryService.getGroceries();
+
+    if (!text || text.trim() === '') {
+      this.groceries = allGrocery;
+    }
+    else {
+      if (text.toLowerCase() === 'true' || text.toLowerCase() === 'false') {
+        this.groceries = allGrocery.filter(i => i.status.toString() === text.toLowerCase());
+      }
+      else {
+        this.groceries = allGrocery.filter(i => i.item.toLowerCase().includes(text.toLowerCase()) || i.quantity.toString() === text);
+      }
+    }
+
     this.verifyCheckBox();
+  }
+
+  refresh(e) {
+    this.searchBar.value = null;
+    this.verifyCheckBox();
+
+    e.target.complete();
   }
 
   updatedToastMsg() {
