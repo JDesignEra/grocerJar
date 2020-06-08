@@ -12,8 +12,8 @@ const routes: Routes = [
         loadChildren: () => import('../groceries-tab/groceries.module').then(m => m.GroceriesTabModule)
       },
       {
-        path: 'tab2',
-        loadChildren: () => import('../tab2/tab2.module').then(m => m.Tab2PageModule)
+        path: 'welcome',
+        loadChildren: () => import('../welcome-tab/welcome.module').then(m => m.WelcomeTabPageModule)
       },
       {
         path: 'about',
@@ -28,7 +28,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/tabs/groceries',
+    redirectTo: '/tabs/welcome',
     pathMatch: 'full'
   }
 ];
