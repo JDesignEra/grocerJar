@@ -7,11 +7,31 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div id="container">
+    <img style="max-height: 300px;" [src]="weather.weatherIcon">
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+    <p *ngIf="weather.weatherText.toLowerCase().includes('shower') || weather.weatherText.toLowerCase().includes('storm')">
+      Looks like it's going to rain today,<br/>
+      it will be a bad day to do your grocery shopping today.
+    </p>
+
+    <p *ngIf="!weather.weatherText.toLowerCase().includes('shower') || !weather.weatherText.toLowerCase().includes('storm')">
+      Looks like it's not going to rain today,<br/>
+      it will be a good day to do your grocery shopping today.
+    </p>
+
+    <p>
+      <ion-label style="font-size: 3rem; font-weight: 700;">
+        {{weather.tenperature}}&deg;C
+      </ion-label><br/>
+
+      <ion-label style="font-size: 1.2rem;;">
+        {{weather.weatherText}}
+      </ion-label>
+    </p>
+    
+    <p>
+      <small>Last Updated on {{weather.dateTime | date: 'dd.MM.yyyy h:mm a'}}</small>
+    </p>
+  </div>
 </ion-content>
