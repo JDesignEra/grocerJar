@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { GroceryService } from '../shared/services/grocery.service';
 import { Grocery } from '../shared/models/grocery';
+import { ToastService } from '../shared/services/toast.service';
 
 @Component({
   selector: 'app-edit-grocery',
@@ -25,7 +26,7 @@ export class EditGroceryPage implements OnInit {
     }
   }
 
-  constructor(private route: ActivatedRoute, private router: Router, private groceryService: GroceryService) {
+  constructor(private route: ActivatedRoute, private router: Router, private groceryService: GroceryService, private toastService: ToastService) {
     this.gid = this.route.snapshot.params.id;
     this.grocery = this.groceryService.getGroceryById(this.gid);
 
@@ -48,6 +49,8 @@ export class EditGroceryPage implements OnInit {
       this.grocery.status = this.editGroceryForm.value.status;
 
       this.groceryService.update(this.grocery);
+
+      this.toastService.presentToast(`Updated grocery item id ${this.grocery.id}.`, 2500, 'success');
 
       this.router.navigate(['tabs/groceries'])
     }

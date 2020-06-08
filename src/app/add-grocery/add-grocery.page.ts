@@ -1,3 +1,4 @@
+import { ToastService } from './../shared/services/toast.service';
 import { GroceryService } from './../shared/services/grocery.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,7 +23,7 @@ export class AddGroceryPage implements OnInit {
     }
   }
 
-  constructor(private route: ActivatedRoute, private router: Router, private groceryService: GroceryService) {
+  constructor(private route: ActivatedRoute, private router: Router, private groceryService: GroceryService, private toastService: ToastService) {
     this.addGroceryForm = new FormGroup({
       item: new FormControl('', [Validators.required]),
       quantity: new FormControl(1, [AddGroceryPage.quantityValidator])
@@ -40,6 +41,8 @@ export class AddGroceryPage implements OnInit {
 
       this.groceryService.add(grocery);
       
+      this.toastService.presentToast(`Added <b>${grocery.item}</b> to grocery list.`, 2500, 'success');
+
       this.router.navigate(['tabs/groceries']);
     }
   }

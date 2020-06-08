@@ -1,6 +1,7 @@
 import { GroceryService } from '../shared/services/grocery.service';
 import { Component } from '@angular/core';
 import { Grocery } from '../shared/models/grocery';
+import { ToastService } from '../shared/services/toast.service';
 
 @Component({
   selector: 'app-groceries',
@@ -12,12 +13,13 @@ export class GroceriesPage {
   indeterminateState: boolean;
   checkParent: boolean;
 
-  constructor(private groceryService: GroceryService) {
+  constructor(private groceryService: GroceryService, private toastService: ToastService) {
     this.groceries = this.groceryService.getGroceries();
   }
 
   delete(grocery: Grocery) {
     this.groceryService.delete(grocery);
+    this.toastService.presentToast(`<b>${grocery.item}</b> item deleted.`, 2000, 'danger');
   }
 
   checkAll() {
@@ -26,6 +28,8 @@ export class GroceriesPage {
         obj.status = this.checkParent;
       });
     });
+
+    this.updatedToastMsg();
   }
 
   verifyCheckBox() {
@@ -55,5 +59,9 @@ export class GroceriesPage {
 
   ngAfterViewInit() {
     this.verifyCheckBox();
+  }
+
+  updatedToastMsg() {
+    this.toastService.presentToast('Updated grocery list.', 2000, 'success');
   }
 }
