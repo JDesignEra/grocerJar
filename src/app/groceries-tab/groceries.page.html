@@ -1,0 +1,87 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Groceries</ion-title>
+
+    <ion-buttons slot="end" >
+      <ion-button color="primary" [routerLink]="['/add-grocery']">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row class="ion-align-items-center">
+      <ion-col size="auto">
+        <ion-item class="ion-text-center" lines="full">
+          <ion-checkbox style="margin: 0;" [(ngModel)]="checkParent" [indeterminate]="indeterminateState" (click)="checkAll($event)"></ion-checkbox>
+        </ion-item>
+
+        <ion-item class="ion-text-center" lines="full" *ngFor="let i of groceries">
+          <ion-checkbox style="margin: 0;" [checked]="i.status" [(ngModel)]="i.status" (ionChange)="verifyCheckBox()"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+
+      <ion-col>
+        <ion-item lines="full">
+          <ion-label style="font-weight: 700;">Item</ion-label>
+        </ion-item>
+
+        <ion-item lines="full" *ngFor="let i of groceries">
+          <span style="text-decoration: line-through; color: #BDBDBD;" *ngIf="i.status">
+            {{i.item}}
+          </span>
+  
+          <span *ngIf="!i.status">{{i.item}}</span>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="auto">
+        <ion-item class="ion-text-center" lines="full">
+          <ion-label style="font-weight: 700;">
+            Qty
+          </ion-label>
+        </ion-item>
+
+        <ion-item class="ion-text-center" lines="full" *ngFor="let i of groceries">
+          <ion-label style="text-decoration: line-through; color: #BDBDBD;" *ngIf="i.status">
+            {{i.quantity}}
+          </ion-label>
+          
+          <ion-label *ngIf="!i.status">{{i.quantity}}</ion-label>
+        </ion-item>
+      </ion-col>
+
+      <ion-col size="auto">
+        <ion-item class="ion-text-center" lines="full">
+          <ion-label style="font-weight: 700;">
+            Actions
+          </ion-label>
+        </ion-item>
+
+        <ion-item class="ion-align-self-center" lines="full" *ngFor="let i of groceries">
+          <ion-buttons class="ion-text-center">
+            <ion-button color="success" [routerLink]="['/edit-grocery', i.id]">
+              <ion-icon name="create"></ion-icon>
+            </ion-button>
+
+            <ion-button color="danger" (click)="delete(i)">
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div id="container" *ngIf="groceries.length < 1">
+    <ion-icon style="font-size: 15rem;" name="sad"></ion-icon><br />
+    <ion-text color="danger" style="font-size: 26px; line-height: 1.2; text-transform: uppercase;">Whoops!</ion-text>
+
+    <p>
+      There is no item(s) in your groceries list.<br />
+      Use the <b>+</b> icon at the top right to add an item.
+    </p>
+  </div>
+</ion-content>

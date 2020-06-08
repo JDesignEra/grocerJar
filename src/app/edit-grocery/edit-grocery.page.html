@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Edit Grocery Item</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="editGroceryForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="auto">
+          <ion-item lines=full>
+            <ion-label>ID</ion-label>
+          </ion-item>
+
+          <ion-item lines=full>
+            <ion-label>Item</ion-label>
+          </ion-item>
+
+          <ion-item lines=full>
+            <ion-label>Quantity</ion-label>
+          </ion-item>
+
+          <ion-item lines=full>
+            <ion-label>Status</ion-label>
+          </ion-item>
+        </ion-col>
+
+        <ion-col>
+          <ion-item lines="full">
+            <ion-input formControlName="gid"></ion-input>
+          </ion-item>
+
+          <ion-item lines="full">
+            <ion-input formControlName="item" placeholder="Item Name"></ion-input>
+
+            <ion-label *ngIf="editGroceryForm.controls.item.errors && submitted" color="danger">
+              Item is editGroceryForm
+            </ion-label>
+          </ion-item>
+
+          <ion-item lines="full">
+            <ion-input type="number" formControlName="quantity" placeholder="Item Quantity"></ion-input>
+
+            <ion-label color="danger" *ngIf="editGroceryForm.controls.quantity.errors && submitted">
+              Quantity must be positive
+            </ion-label>
+          </ion-item>
+
+          <ion-item lines="full">
+            <ion-checkbox style="margin: 0;" formControlName="status"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  
+    <ion-button style="margin: 1rem;" expand="block" color="success" type="submit" (click)="update()">
+      Update
+    </ion-button>
+  </form>
+</ion-content>

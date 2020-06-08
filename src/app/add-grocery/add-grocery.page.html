@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Add Grocery Item</ion-title>
+
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="addGroceryForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="auto">
+          <ion-item lines=full>
+            <ion-label>Item</ion-label>
+          </ion-item>
+
+          <ion-item lines=full>
+            <ion-label>Quantity</ion-label>
+          </ion-item>
+        </ion-col>
+
+        <ion-col>
+          <ion-item lines="full">
+            <ion-input formControlName="item" placeholder="Item Name"></ion-input>
+
+            <ion-label *ngIf="addGroceryForm.controls.item.errors && submitted" color="danger">
+              Item is required
+            </ion-label>
+          </ion-item>
+
+          <ion-item lines="full">
+            <ion-input type="number" formControlName="quantity" placeholder="Item Quantity"></ion-input>
+
+            <ion-label color="danger" *ngIf="addGroceryForm.controls.quantity.errors && submitted">
+              Quantity must be positive
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  
+    <ion-button style="margin: 1rem;" expand="block" color="success" type="submit" (click)="add()">
+      Add
+    </ion-button>
+  </form>
+</ion-content>
