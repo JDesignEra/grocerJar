@@ -8,30 +8,32 @@
 
 <ion-content [fullscreen]="true">
   <div id="container">
-    <img style="max-height: 300px;" [src]="weather.weatherIcon">
+    <div *ngIf="weather">
+      <img style="max-height: 300px;" [src]="weather.weatherIcon" *ngIf="weather.weatherIcon">
 
-    <p *ngIf="weather.weatherText.toLowerCase().includes('shower') || weather.weatherText.toLowerCase().includes('storm')">
-      Looks like it's going to rain today,<br/>
-      it will be a bad day to do your grocery shopping today.
-    </p>
+      <p *ngIf="weather.weatherText.toLowerCase().includes('shower') || weather.weatherText.toLowerCase().includes('storm')">
+        Looks like it's going to rain today,<br/>
+        it will be a bad day to do your grocery shopping today.
+      </p>
 
-    <p *ngIf="!weather.weatherText.toLowerCase().includes('shower') || !weather.weatherText.toLowerCase().includes('storm')">
-      Looks like it's not going to rain today,<br/>
-      it will be a good day to do your grocery shopping today.
-    </p>
+      <p *ngIf="!weather.weatherText.toLowerCase().includes('shower') || !weather.weatherText.toLowerCase().includes('storm')">
+        Looks like it's not going to rain today,<br/>
+        it will be a good day to do your grocery shopping today.
+      </p>
 
-    <p>
-      <ion-label style="font-size: 3rem; font-weight: 700;">
-        {{weather.tenperature}}&deg;C
-      </ion-label><br/>
+      <p>
+        <ion-label style="font-size: 3rem; font-weight: 700;">
+          {{weather.tenperature}}&deg;C
+        </ion-label><br/>
 
-      <ion-label style="font-size: 1.2rem;;">
-        {{weather.weatherText}}
-      </ion-label>
-    </p>
-    
-    <p>
-      <small>Last Updated on {{weather.dateTime | date: 'dd.MM.yyyy h:mm a'}}</small>
-    </p>
+        <ion-label style="font-size: 1.2rem;;">
+          {{weather.weatherText}}
+        </ion-label>
+      </p>
+      
+      <p>
+        <small>Last Updated on {{weather.dateTime | date: 'dd.MM.yyyy h:mm a'}}</small>
+      </p>
+    </div>
   </div>
 </ion-content>
