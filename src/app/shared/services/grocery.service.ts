@@ -1,52 +1,65 @@
 import { Injectable } from '@angular/core';
+import { map, take } from 'rxjs/operators';
 import { Grocery } from '../models/grocery';
+import { Observable } from 'rxjs';
+import { AngularFirestoreCollection, AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GroceryService {
-  groceries: Grocery[] = []
+  private groceries: Observable<Grocery[]>
+  private groceryCollection: AngularFirestoreCollection<Grocery>;
 
-  constructor() {
-    this.groceries = [
-      new Grocery('Bread', 2, 0, false),
-      new Grocery('Egg', 1, 1, true),
-      new Grocery('Milk', 3, 2, false),
-    ]
+  constructor(private afs: AngularFirestore) {
+    this.groceryCollection = this.afs.collection<Grocery>('grocery');
+    this.groceries = this.groceryCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+
+          return { id, ...data };
+        });
+      })
+    )
   }
 
-  getGroceries(): Grocery[] {
+  getAll(): Observable<Grocery[]> {
     return this.groceries;
   }
 
-  getGroceryById(id: number): Grocery {
-    return this.groceries.find(i => i.id == id);
+  getById(id: string): Observable<Grocery> {
+    return this.groceryCollection.doc<Grocery>(id.toString()).valueChanges().pipe(
+      take(1),
+      map(i => {
+        i.id = id;
+        
+        return i;
+      })
+    );
   }
 
-  add(grocery: Grocery) {
-    // Simiulate Database/SQL auto-incremental
-    grocery.id = this.groceries.length > 0 ? this.groceries[this.groceries.length - 1].id + 1 : 0
-    this.groceries.push(grocery);
+  add(grocery: Grocery): Promise<void> {
+    return this.groceryCollection.add(grocery).then(ref => this.updateId(ref.id));
   }
 
-  delete(grocery: Grocery) {
-    const idx = this.groceries.findIndex(i => i.id == grocery.id);
-
-    if (idx >= 0) {
-      this.groceries.splice(idx, 1);
-    }
+  update(grocery: Grocery): Promise<void> {
+    return this.groceryCollection.doc(grocery.id).update({
+      item: grocery.item,
+      quantity: grocery.quantity,
+      status: grocery.status,
+      image: grocery.image
+    });
   }
 
-  update(grocery: Grocery) {
-    const idx = this.groceries.findIndex(i => i.id == grocery.id);
+  delete(id: string): Promise<void> {
+    return this.groceryCollection.doc(id).delete();
+  }
 
-    if (idx >= 0) {
-      const g = this.groceries[idx];
-
-      g.item = grocery.item;
-      g.quantity = grocery.quantity;
-      g.image = grocery.image;
-      g.status = grocery.status;
-    }
+  private updateId(id: string): Promise<void> {
+    return this.groceryCollection.doc(id).update({
+      id: id
+    });
   }
 }

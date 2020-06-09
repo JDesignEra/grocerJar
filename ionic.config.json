@@ -1,7 +1,8 @@
 {
   "name": "grocerJar",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {},
+    "cordova": {}
   },
   "type": "angular"
 }

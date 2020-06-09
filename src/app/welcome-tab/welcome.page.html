@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Welcome
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -12,13 +12,13 @@
       <img style="max-height: 300px;" [src]="weather.weatherIcon" *ngIf="weather.weatherIcon">
 
       <p *ngIf="weather.weatherText.toLowerCase().includes('shower') || weather.weatherText.toLowerCase().includes('storm')">
-        Looks like it's going to rain today,<br/>
-        it will be a bad day to do your grocery shopping today.
+        Looks like it will be raining,<br/>
+        it is probably best not to do your grocerry shopping.
       </p>
 
       <p *ngIf="!weather.weatherText.toLowerCase().includes('shower') || !weather.weatherText.toLowerCase().includes('storm')">
-        Looks like it's not going to rain today,<br/>
-        it will be a good day to do your grocery shopping today.
+        Looks like it will not be raining,<br/>
+        it is probably good to do your grocerry shopping.
       </p>
 
       <p>

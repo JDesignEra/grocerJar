@@ -26,7 +26,7 @@
         </ion-item>
 
         <ion-item class="ion-text-center" lines="full" *ngFor="let i of groceries">
-          <ion-checkbox style="margin: 0;" [checked]="i.status" [(ngModel)]="i.status" (ionChange)="verifyCheckBox()" (click)="updatedToastMsg()"></ion-checkbox>
+          <ion-checkbox style="margin: 0;" [checked]="i.status" [(ngModel)]="i.status" (ngModelChange)="verifyCheckBox()" (click)="updatedToastMsg()"></ion-checkbox>
         </ion-item>
       </ion-col>
 

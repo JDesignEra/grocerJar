@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { GroceryService } from '../shared/services/grocery.service';
 import { Component, ViewChild } from '@angular/core';
 import { Grocery } from '../shared/models/grocery';
@@ -17,15 +18,16 @@ export class GroceriesPage {
   checkParent: boolean;
 
   constructor(private groceryService: GroceryService, private toastService: ToastService) {
-    this.groceries = this.groceryService.getGroceries();
+    this.groceryService.getAll().subscribe(i => {
+      this.groceries = i;
+      this.initCheckBoxVerify();
+    });
   }
 
-  ngAfterViewInit() {
-    this.verifyCheckBox();
-  }
+  ngOnInit() {}
 
   delete(grocery: Grocery) {
-    this.groceryService.delete(grocery);
+    this.groceryService.delete(grocery.id);
     this.toastService.presentToast(`<b>${grocery.item}</b> item deleted.`, 2000, 'danger');
   }
 
@@ -44,48 +46,90 @@ export class GroceriesPage {
     let checked = 0;
 
     this.groceries.map(obj => {
-      if (obj.status) checked++;
+      if (obj.status) {
+        checked++;
+      }
+
+      this.groceryService.update(obj);
     });
 
     if (checked > 0 && checked < totalItems) {
-      //If even one item is checked but not all
+      // If even one item is checked but not all
       this.indeterminateState = true;
       this.checkParent  = false;
     }
     else if (checked == totalItems) {
-      //If all are checked
+      // If all are checked
       this.checkParent  = true;
       this.indeterminateState = false;
     }
     else {
-      //If none is checked
+      // If none is checked
+      this.indeterminateState = false;
+      this.checkParent  = false;
+    }
+  }
+
+  initCheckBoxVerify() {
+    const totalItems = this.groceries.length;
+    let checked = 0;
+
+    this.groceries.forEach(obj => {
+      if (obj.status) {
+        checked++;
+      }
+    });
+
+    if (checked > 0 && checked < totalItems) {
+      // If even one item is checked but not all
+      this.indeterminateState = true;
+      this.checkParent  = false;
+    }
+    else if (checked == totalItems) {
+      // If all are checked
+      this.checkParent  = true;
+      this.indeterminateState = false;
+    }
+    else {
+      // If none is checked
       this.indeterminateState = false;
       this.checkParent  = false;
     }
   }
 
   search(e) {
-    const text =e.target.value;
-    const allGrocery = this.groceryService.getGroceries();
+    const text = e.target.value;
+    const allGrocery = this.groceryService.getAll();
 
     if (!text || text.trim() === '') {
-      this.groceries = allGrocery;
+      allGrocery.subscribe(i => {
+        this.groceries = i;
+
+        this.initCheckBoxVerify();
+      });
     }
     else {
       if (text.toLowerCase() === 'true' || text.toLowerCase() === 'false') {
-        this.groceries = allGrocery.filter(i => i.status.toString() === text.toLowerCase());
+        allGrocery.subscribe(i => {
+          this.groceries = i.filter(obj => obj.status.toString() === text.toLowerCase())
+
+          this.initCheckBoxVerify();
+        })
       }
       else {
-        this.groceries = allGrocery.filter(i => i.item.toLowerCase().includes(text.toLowerCase()) || i.quantity.toString() === text);
+        allGrocery.subscribe(i => {
+          this.groceries = i.filter(obj => obj.item.toLowerCase().includes(text.toLowerCase()) || obj.quantity.toString() === text);
+          this.initCheckBoxVerify();
+
+          this.initCheckBoxVerify();
+        });
       }
     }
-
-    this.verifyCheckBox();
   }
 
   refresh(e) {
     this.searchBar.value = null;
-    this.verifyCheckBox();
+    this.initCheckBoxVerify();
 
     e.target.complete();
   }
