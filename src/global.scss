@@ -45,6 +45,11 @@ body {
     --ion-color-success-contrast: #FFFFFF;
 }
 
+.modal-wrapper {
+    --max-height: 12rem;
+    --max-width: 90vw;
+}
+
 .native-input.sc-ion-input-md {
     padding-left: 0 !important;
 }

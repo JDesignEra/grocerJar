@@ -3,6 +3,10 @@
     <ion-title>Groceries</ion-title>
 
     <ion-buttons slot="end" >
+      <ion-button color="primary" (click)="filter()">
+        <ion-icon name="funnel"></ion-icon>
+      </ion-button>
+
       <ion-button color="primary" [routerLink]="['/add-grocery']">
         <ion-icon name="add"></ion-icon>
       </ion-button>

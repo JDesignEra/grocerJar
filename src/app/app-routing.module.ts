@@ -13,7 +13,11 @@ const routes: Routes = [
   {
     path: 'edit-grocery/:id',
     loadChildren: () => import('./edit-grocery/edit-grocery.module').then( m => m.EditGroceryPageModule)
+  },  {
+    path: 'filter-grocery',
+    loadChildren: () => import('./filter-grocery/filter-grocery.module').then( m => m.FilterGroceryPageModule)
   }
+
 ];
 @NgModule({
   imports: [
