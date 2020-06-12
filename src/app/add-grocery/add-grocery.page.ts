@@ -11,6 +11,7 @@ import { Grocery } from '../shared/models/grocery';
   styleUrls: ['./add-grocery.page.scss'],
 })
 export class AddGroceryPage implements OnInit {
+  imageFile: File;
   addGroceryForm: FormGroup;
   submitted: boolean = false;
 
@@ -25,27 +26,39 @@ export class AddGroceryPage implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router, private groceryService: GroceryService, private toastService: ToastService) {
     this.addGroceryForm = new FormGroup({
+      image: new FormControl(''),
       item: new FormControl('', [Validators.required]),
       quantity: new FormControl(1, [AddGroceryPage.quantityValidator])
     });
   }
 
+  ngOnInit() {}
+
   add() {
     this.submitted = true;
 
     if (this.addGroceryForm.valid) {
+      const uploadedFileName = this.groceryService.uploadImage(this.imageFile);
+
       const grocery = new Grocery(
         this.addGroceryForm.value.item,
-        this.addGroceryForm.value.quantity
+        this.addGroceryForm.value.quantity,
+        false,
+        uploadedFileName
       );
 
       this.groceryService.add(grocery);
       
-      this.toastService.presentToast(`Added <b>${grocery.item}</b> to grocery list.`, 2500, 'success');
+      this.toastService.presentToast('Please wait while we redirect you...', 2000, 'warning');
 
-      this.router.navigate(['tabs/groceries']);
+      setTimeout(() => {
+        this.toastService.presentToast(`Added <b>${grocery.item}</b> to grocery list.`, 2500, 'success');
+        this.router.navigate(['tabs/groceries']);
+      }, 2000);
     }
   }
 
-  ngOnInit() {}
+  fileListener(e: FileList) {
+    this.imageFile = e.item(0);
+  }
 }

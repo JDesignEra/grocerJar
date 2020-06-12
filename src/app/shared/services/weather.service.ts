@@ -17,7 +17,6 @@ export class WeatherService {
         map(response => {
           let res = response[0];
 
-          
           return new Weather(res['LocalObservationDateTime'], res['WeatherText'], `assets/weather-icons/${res['WeatherIcon']}.svg`, res['Temperature']['Metric']['Value']);
         })
       );

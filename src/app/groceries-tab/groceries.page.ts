@@ -14,6 +14,7 @@ import { FilterGroceryPage } from '../filter-grocery/filter-grocery.page';
 export class GroceriesPage {
   @ViewChild('searchBar', {static: false}) searchBar: IonSearchbar;
 
+  grocery: any;
   groceries: Grocery[] = [];
   indeterminateState: boolean;
   checkParent: boolean;
@@ -31,6 +32,7 @@ export class GroceriesPage {
 
   delete(grocery: Grocery) {
     this.groceryService.delete(grocery.id);
+    this.groceryService.deleteImage(grocery.image);
     this.toastService.presentToast(`<b>${grocery.item}</b> item deleted.`, 2000, 'danger');
   }
 

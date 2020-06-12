@@ -1,2 +1,0 @@
-# grocerJar
-NYP GeoVis Assignment

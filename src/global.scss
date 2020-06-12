@@ -63,3 +63,14 @@ body {
     top: 50%;
     transform: translateY(-50%);
 }
+
+/* Grocery image column */
+.grocery-img ion-thumbnail {
+    max-height: 2rem;
+}
+
+@media (max-width: 576px) {
+    .grocery-img {
+        display: none;
+    }
+}
