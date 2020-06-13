@@ -11,12 +11,13 @@
     <div *ngIf="weather">
       <img style="max-height: 300px;" [src]="weather.weatherIcon" *ngIf="weather.weatherIcon">
 
-      <p *ngIf="weather.weatherText.toLowerCase().includes('shower') || weather.weatherText.toLowerCase().includes('storm')">
+      
+      <p *ngIf="weather.weatherText.toLowerCase().includes('shower') || weather.weatherText.toLowerCase().includes('storm') || weather.weatherText.toLowerCase().includes('rain') ">
         Looks like it will be raining,<br/>
         it is probably best not to do your grocerry shopping.
       </p>
 
-      <p *ngIf="!weather.weatherText.toLowerCase().includes('shower') || !weather.weatherText.toLowerCase().includes('storm')">
+      <p *ngIf="!weather.weatherText.toLowerCase().includes('shower') && !weather.weatherText.toLowerCase().includes('storm') && !weather.weatherText.toLowerCase().includes('rain')">
         Looks like it will not be raining,<br/>
         it is probably good to do your grocerry shopping.
       </p>

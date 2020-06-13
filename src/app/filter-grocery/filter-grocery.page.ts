@@ -1,7 +1,6 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Grocery } from '../shared/models/grocery';
 
 @Component({
   selector: 'app-filter-grocery',
@@ -13,14 +12,14 @@ export class FilterGroceryPage implements OnInit {
   filterForm: FormGroup;
   submitted: boolean = false;
   
-  constructor(private modalController: ModalController) {
+  constructor(private modalController: ModalController) {}
+
+  ngOnInit() {
     this.filterForm = new FormGroup({
       target: new FormControl(this.sortState && this.sortState.length > 1 && this.sortState[0] ? this.sortState[0] : null, [Validators.nullValidator]),
-      type: new FormControl(this.sortState && this.sortState.length > 2 && this.sortState[1] ? this.sortState[1] : null, [Validators.nullValidator])
+      type: new FormControl(this.sortState && this.sortState.length > 1 && this.sortState[1] ? this.sortState[1] : null, [Validators.nullValidator])
     });
   }
-
-  ngOnInit() {}
 
   sort() {
     this.submitted = true;
