@@ -203,6 +203,22 @@ export class GroceriesPage {
           });
         }
       }
+      else if (this.sortState[0] === 'status') {
+        if (this.sortState[1] === 'asc') {
+          this.groceries.sort(function(a) {
+            if (a.status) return -1;
+
+            return 0;
+          });
+        }
+        else {
+          this.groceries.sort(function(a) {
+            if (!a.status) return -1;
+
+            return 0;
+          });
+        }
+      }
     }
   }
 }

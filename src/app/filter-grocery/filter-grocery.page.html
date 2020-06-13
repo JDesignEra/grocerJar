@@ -32,9 +32,10 @@
       
             <ion-col>
               <ion-item lines="full">
-                <ion-select formControlName="target" placeholder="Sort Target" interface="popover" required>
+                <ion-select formControlName="target" placeholder="Sort Target" interface="popover" (ionChange)="targetListener($event)" required>
                   <ion-select-option value="item">Item</ion-select-option>
                   <ion-select-option value="quantity">Quantity</ion-select-option>
+                  <ion-select-option value="status">State</ion-select-option>
                 </ion-select>
     
                 <ion-label *ngIf="filterForm.controls.target.errors && submitted" color="danger">
@@ -43,9 +44,9 @@
               </ion-item>
     
               <ion-item lines="full">
-                <ion-select formControlName="type" placeholder="Sort By" interface="popover" required>
-                  <ion-select-option value="asc">Ascending</ion-select-option>
-                  <ion-select-option value="desc">Descending</ion-select-option>
+                <ion-select #sortBySelect formControlName="type" placeholder="Sort By" interface="popover" (ionChange)="typeListener($event)" required>
+                  <ion-select-option value="asc">{{sortByText[0]}}</ion-select-option>
+                  <ion-select-option value="desc">{{sortByText[1]}}</ion-select-option>
                 </ion-select>
 
                 <ion-label *ngIf="filterForm.controls.type.errors && submitted" color="danger">
