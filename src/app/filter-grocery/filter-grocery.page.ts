@@ -47,9 +47,11 @@ export class FilterGroceryPage implements OnInit {
       this.sortByText = ['Ascending', 'Descending'];
     }
     
+    // Force type select text to update.
     this.sortBySelect.selectedText = '';
   }
 
+  // Force type select text to update.
   typeListener(e) {
     if (e.target.value === 'asc') {
       this.sortBySelect.selectedText = this.sortByText[0];
